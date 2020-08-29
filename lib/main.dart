@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fiap_platform_channel/screen/game.dart';
 
 void main() {
   runApp(App());
