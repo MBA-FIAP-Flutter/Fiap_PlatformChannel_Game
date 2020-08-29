@@ -15,7 +15,7 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
 
-  TextStyle textStyle = TextStyle(
+  TextStyle textStyle75 = TextStyle(
       fontSize: 75,
       color: Colors.white
   );
@@ -26,6 +26,13 @@ class _GameState extends State<Game> {
 
   bool minhaVez;
   WrapperCreator creator;
+
+  // 0 = branco. 1 = eu. 2 - adversário
+  List<List<int>> cells = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +87,24 @@ class _GameState extends State<Game> {
                       minhaVez ? "Sua Vez!!" : "Aguarde Sua Vez!!!",
                       style: textStyle36
                   ),
+                  GridView.count(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(20),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 3,
+                    children: <Widget>[
+                      getCell(0, 0),
+                      getCell(0, 1),
+                      getCell(0, 2),
+                      getCell(1, 0),
+                      getCell(1, 1),
+                      getCell(1, 2),
+                      getCell(2, 0),
+                      getCell(2, 1),
+                      getCell(2, 2),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -102,5 +127,19 @@ class _GameState extends State<Game> {
       ),
     ),
   );
+
+  Widget getCell(int x, int y) =>
+      InkWell(
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Center(
+              child: Text(
+                  cells[x][y] == 0 ? " " : cells[x][y] == 1 ? "X" : "O",
+                  style: textStyle75
+              )
+          ),
+          color: Colors.lightBlueAccent,
+        ),
+      );
 
 }
