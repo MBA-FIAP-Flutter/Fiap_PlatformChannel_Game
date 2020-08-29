@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_fiap_platform_channel/model/message.dart';
 import 'package:flutter_fiap_platform_channel/util/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,6 +37,29 @@ class _GameState extends State<Game> {
   ];
 
   static const platform = const MethodChannel('game/exchange');
+
+  @override
+  void initState() {
+    super.initState();
+    configurePubNub();
+  }
+
+  configurePubNub(){
+    platform.setMethodCallHandler((call) {
+      //respondendo a chamadas do código nativo
+      String argumentos = call.arguments.toString();
+      List<String> parts = argumentos.split("|");
+      ExchangeMessage message = ExchangeMessage(parts[0], int.parse(parts[1]), int.parse(parts[2]));
+
+      if (message.user == (creator.creator ? 'p2' : 'p1')) {
+        setState(() {
+          minhaVez = true;
+          cells[message.x][message.y] = 2;
+        });
+        //checkWinner();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
