@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_fiap_platform_channel/util/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,6 +34,8 @@ class _GameState extends State<Game> {
     [0, 0, 0],
     [0, 0, 0]
   ];
+
+  static const platform = const MethodChannel('game/exchange');
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +176,17 @@ class _GameState extends State<Game> {
         );
       },
     );
+  }
+
+  Future<bool> _sendAction(String action, Map<String, dynamic> arguments) async {
+    try {
+      //neste exato momento estamos fazendo uma chamada ao código nativo
+      //passando qual ação desejamos e quais os seus respetivos argumentos
+      final bool result = await platform.invokeMethod(action, arguments);
+      return result;
+    } on PlatformException catch (e) {
+      return false;
+    }
   }
 
 
