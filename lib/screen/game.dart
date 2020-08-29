@@ -125,6 +125,9 @@ class _GameState extends State<Game> {
           style: textStyle36
         ),
       ),
+      onPressed: (){
+        createGame(owner);
+      },
     ),
   );
 
@@ -141,5 +144,36 @@ class _GameState extends State<Game> {
           color: Colors.lightBlueAccent,
         ),
       );
+
+  Future<void> createGame(bool isCreator) async {
+    TextEditingController editingController = TextEditingController();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Qual o nome do jogo?'),
+          content: TextField(
+            controller: editingController,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Jogar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _sendAction('subscribe', {'channel': editingController.text}).then((value) {
+                  setState(() {
+                    creator = WrapperCreator(isCreator, editingController.text);
+                    minhaVez = isCreator;
+                  });
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
 }

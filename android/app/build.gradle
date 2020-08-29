@@ -60,4 +60,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation group: 'com.pubnub', name: 'pubnub-gson', version: '4.31.3'
+
 }
