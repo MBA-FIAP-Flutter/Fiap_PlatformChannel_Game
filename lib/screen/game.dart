@@ -170,7 +170,43 @@ class _GameState extends State<Game> {
           ),
           color: Colors.lightBlueAccent,
         ),
+        onTap: () async {
+          if (minhaVez && cells[x][y] == 0) {
+            _showSendingAcion();
+            _sendAction(
+                'sendAction',
+                {'tap': '${creator.creator ? 'p1' : 'p2'}|$x|$y'})
+                .then((value) {
+              Navigator.of(context).pop();
+              minhaVez = false;
+              cells[x][y] = 1;
+
+              setState(() {});
+
+              //checkWinner();
+            });
+          }
+        },
       );
+
+  Future<void> _showSendingAcion() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enviando ação, aguarde...'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator()
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 
   Future<void> createGame(bool isCreator) async {
     TextEditingController editingController = TextEditingController();
